@@ -1,1 +1,91 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Document</title>
+	<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    
+	<section class="game_section">
+		<div class="preloader">
+		<div class="loader"></div>
+		<h2 style="color: white;">LOADING...</h3>
+		</div>
+
+		<h3> THIMBLES! </h3>
+        <div id="countdown">05:00</div>
+        <div class="score">Balance: <span class="scoreNm">200</span>&#9828;</div>
+        <div class="shop">
+            <div class="shopBtn"><img src="Img/beer-pong.gif" alt="shopImg"></div>
+            <h2>Cups</h2>
+            <div class="c0" onclick="setCup(0)"></div>
+            <div class="c1" onclick="setCup(1)"></div>
+            <div class="c2" onclick="setCup(2)"></div>
+            <div class="c3" onclick="setCup(3)"></div>
+            <div class="c4" onclick="setCup(4)"></div>
+            <div class="c5" onclick="setCup(5)"></div>
+            <div class="c6" onclick="setCup(6)"></div>
+            <div class="c7" onclick="setCup(7)"></div>
+            <div class="c8" onclick="setCup(8)"></div>
+            <div class="c9" onclick="setCup(9)"></div>
+            <div class="c10" onclick="setCup(10)"></div>
+            <div class="c11" onclick="setCup(11)"></div>
+            <div class="c12" onclick="setCup(12)"></div>
+            <div class="c13" onclick="setCup(13)"></div>
+            <div class="c14" onclick="setCup(14)"></div>
+            <div class="c15" onclick="setCup(15)"></div>
+
+            <h2>Balls</h2>
+            <div class="b0" onclick="setBall(0)"></div>
+            <div class="b1" onclick="setBall(1)"></div>
+            <div class="b2" onclick="setBall(2)"></div>
+            <div class="b3" onclick="setBall(3)"></div>
+            <div class="b4" onclick="setBall(4)"></div>
+            <div class="b5" onclick="setBall(5)"></div>
+            <div class="s"></div>
+        </div>
+
+        <div class="table">
+            <div class="sum"><span class="sumNm">0</span>&#9824;</div>
+            <div class="p1" onclick="setOnTable(0.5)">50%</div>
+            <div class="p1" onclick="setOnTable(0.75)">75%</div>
+            <div class="p1" onclick="setOnTable(1)">100%</div>
+        </div>
+
+		<div class="game_container" id="game-container">
+            <button
+                class="sewing_thimble thimble-0"
+                id="Cup0"
+                onclick="selectthimble('Cup0')"
+                disabled="disabled"
+            ></button>
+            <button
+                class="sewing_thimble thimble-1"
+                id="Cup1"
+                onclick="selectthimble('Cup1')"
+                disabled="disabled"
+            ></button>
+            <button
+                class="sewing_thimble thimble-2"
+                id="Cup2"
+                onclick="selectthimble('Cup2')"
+                disabled="disabled"
+            ></button>
+            <div class="" id="thimble_ball"></div>
+		</div>
+
+		<div class="pbutton_container">
+		<button class="Playbutton" id="Playbutton" onclick="StartGame()">
+			Play
+		</button>
+		</div>
+	</section>
+
+	<!-- No code should be below the javascript link -->
+	<script src="script.js"></script>
+</body>
+</html>
