@@ -1,3 +1,9 @@
+let [score, points] = [...document.getElementsByClassName("scoreNm")]
+const countdownEl = document.getElementById('countdown');
+let board = document.querySelector(".outer");
+let table = document.querySelector(".table");
+
+
 //pre-loader
 window.addEventListener("load", () => {
     const preloader = document.querySelector(".preloader");
@@ -10,12 +16,25 @@ let onTable = 0
 
 //this function triggers when you click play
 function StartGame() {
-    let points = document.querySelector(".scoreNm");
     if (parseInt(points.innerHTML) <= 0) {
-        alert("Game Over");
+        score.innerHTML = 'No spades left '
+        board.style.display = "flex";
         clearInterval(idItr);
     } else if (onTable == 0) {
-        alert("Please place a bet");
+        // blinking border
+        table.style.border = '5px dashed red'
+
+        setTimeout(() => {
+            table.style.border = '5px dashed transparent'
+        }, 500)
+
+        setTimeout(() => {
+            table.style.border = '5px dashed red'
+        }, 1000)
+
+        setTimeout(() => {
+            table.style.border = '5px dashed transparent'
+        }, 1500)
     } else {
         Showball();
         // setTimeout(Showball,);
@@ -34,9 +53,8 @@ function thimbledown(x) {
 }
 
 //this function selects one thimble at random and positions the ball under it and lifts it at the beginning
-let timeLeft = 5 * 60; // 5 minutes in seconds
+let timeLeft = 1 * 60; // 5 minutes in seconds
 let idItr
-const countdownEl = document.getElementById('countdown');
 function Showball() {
     document.getElementById("Playbutton").style.pointerEvents = "none";
     let rand = getRandNum();
@@ -61,9 +79,11 @@ function Showball() {
     // Start Timer
     if (countdownEl.innerHTML == '05:00') {
         idItr = setInterval(() => {
-            if(timeLeft <= 0) {
-                clearInterval(timeLeft = 0);
-                alert("Time's up! You Won " + points.innerHTML + " spades!!");
+
+            if (timeLeft <= 0) {
+                clearInterval(idItr);
+                board.style.display = "flex";
+                score.innerHTML = 'Time\'s up!  You Won ' + points.innerHTML + ' '
             }
 
             let minutes = Math.floor(timeLeft / 60);
@@ -79,7 +99,7 @@ function Showball() {
     }
 }
 
-//this function resets the class of all the thimbles to default
+// This function resets the class of all the thimbles to default
 function resetthimbclass() {
 document
     .getElementById("Cup0")
@@ -163,7 +183,6 @@ function selectthimble(x) {
     selectedthimble.classList.add("thimbleup"); //lift the selected thimble up
 
     setTimeout(function () {
-        let points = document.querySelector(".scoreNm");
 
         if (winningthimble != selectedthimble) {
             setTimeout(function () {
@@ -179,6 +198,11 @@ function selectthimble(x) {
 
             // subtract points
             points.innerHTML = parseInt(points.innerHTML) - onTable;
+            points.style.color = "crimson";
+            setTimeout(function () {
+                points.style.color = "white";
+            }, 1000)
+
             onTable = 0;
             let sum = document.querySelector(".sumNm");
             sum.innerHTML = 0
@@ -188,8 +212,14 @@ function selectthimble(x) {
 
             // add points
             points.innerHTML = parseInt(points.innerHTML) + onTable;
+            points.style.color = "#63d673";
+            setTimeout(function () {
+                points.style.color = "white";
+            }, 1000)
+
             if (points.innerHTML <= 0) {
-                alert("Game Over");
+                board.style.display = "flex";
+                score.innerHTML = 'No spades left '
                 clearInterval(idItr);
             }
             onTable = 0;
@@ -223,14 +253,21 @@ function setBall(id) {
 }
 
 function setOnTable(prst) {
-    let points = document.querySelector(".scoreNm");
 
     if (parseInt(points.innerHTML) > 0) {
         let sum = document.querySelector(".sumNm");
         onTable = Math.round(points.innerHTML * prst);
         sum.innerHTML = onTable;
     } else {
-        alert("Game Over");
+        board.style.display = "flex";
+        score.innerHTML = 'No spades left '
         clearInterval(idItr);
     }
+}
+
+function init() {
+    setOnTable(0);
+    points.innerHTML = 200;
+    board.style.display = "none";
+    countdownEl.innerHTML = '05:00'
 }
