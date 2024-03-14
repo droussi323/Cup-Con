@@ -4,6 +4,10 @@ let board = document.querySelector(".outer");
 let table = document.querySelector(".table");
 
 
+let Game0N = false
+let TIME = 5 * 60
+let onTable = 0
+
 //pre-loader
 window.addEventListener("load", () => {
     const preloader = document.querySelector(".preloader");
@@ -12,15 +16,14 @@ window.addEventListener("load", () => {
     }, 2000)
 });
 
-let onTable = 0
 
 //this function triggers when you click play
 function StartGame() {
-    if (parseInt(points.innerHTML) <= 0) {
+    if (parseInt(points.innerHTML) <= 0) { // if no spades left
         score.innerHTML = 'No spades left '
         board.style.display = "flex";
         clearInterval(idItr);
-    } else if (onTable == 0) {
+    } else if (onTable == 0) { // if no spades on table
         // blinking border
         table.style.border = '5px dashed red'
 
@@ -36,25 +39,26 @@ function StartGame() {
             table.style.border = '5px dashed transparent'
         }, 1500)
     } else {
+        Game0N = true
         Showball();
         // setTimeout(Showball,);
         setTimeout(shuffling, 7000);
     }
 }
 
+
 //this function lifts the thimbles
 function thimbleup(x) {
     x.classList.add("thimbleup");
 }
-
 //this function puts the thimble down
 function thimbledown(x) {
     x.classList.remove("thimbleup");
 }
-
-//this function selects one thimble at random and positions the ball under it and lifts it at the beginning
-let timeLeft = 1 * 60; // 5 minutes in seconds
+//this function selects one thimble at random and positions the ball
+// under it and lifts it at the beginning
 let idItr
+let timeLeft = TIME ; // 5 minutes in seconds
 function Showball() {
     document.getElementById("Playbutton").style.pointerEvents = "none";
     let rand = getRandNum();
@@ -79,22 +83,25 @@ function Showball() {
     // Start Timer
     if (countdownEl.innerHTML == '05:00') {
         idItr = setInterval(() => {
-
             if (timeLeft <= 0) {
-                clearInterval(idItr);
-                board.style.display = "flex";
-                score.innerHTML = 'Time\'s up!  You Won ' + points.innerHTML + ' '
+                if (!Game0N) {
+                    setTimeout(() => {
+                        clearInterval(idItr);
+                        board.style.display = "flex";
+                        score.innerHTML = 'Time\'s up!  You Won ' + points.innerHTML + ' '
+                        clearInterval(idItr);
+                    }, 2000)
+                }
+            } else {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                countdownEl.innerHTML = `${minutes}:${seconds}`;
+                timeLeft--;
             }
-
-            let minutes = Math.floor(timeLeft / 60);
-            let seconds = timeLeft % 60;
-
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-            seconds = seconds < 10 ? '0' + seconds : seconds;
-
-            countdownEl.innerHTML = `${minutes}:${seconds}`;
-            timeLeft--;
-
         }, 1000);
     }
 }
@@ -234,13 +241,14 @@ function selectthimble(x) {
             }, 2500); //bring the winning thimble down after 2.5secs
             document.getElementById("Playbutton").style.pointerEvents = "all"; //make the play button clickable again
         }
+        Game0N = false
     }, 2000);
 }
 
 
 function setCup(id) {
     let elements = document.querySelectorAll(".sewing_thimble");
-    for (element of elements) {
+    for (let element of elements) {
         element.style.background = `url("Img/c${id}.png") no-repeat fixed center`;
         element.style.backgroundSize = `contain`;
     }
@@ -270,4 +278,11 @@ function init() {
     points.innerHTML = 200;
     board.style.display = "none";
     countdownEl.innerHTML = '05:00'
+    // Clear all intervals and timeouts
+    InID = setInterval(() => {}, 10)
+    TiID = setTimeout(() => {}, 10)
+    while (InID--) clearInterval(InID)
+    while (TiID--) clearTimeout(TiID)
+    timeLeft = TIME
+
 }
